@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real-Time Weather Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-SOME_INTEGRITY_VALUE" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='weather.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Real-Time Weather Dashboard</h1>
+    <h2>Get the latest weather conditions for your location</h2>
+    <form method="POST" action="/">
+      <div class="search-bar">
+        <input type="text" name="location" placeholder="Enter location">
+        <button type="submit">Search</button>
+      </div>
+    </form>
+    <div id="weather-info">
+      {% if weather_data %}
+        <p>Temperature: {{ weather_data.temperature }}°C</p>
+        <p>Humidity: {{ weather_data.humidity }}%</p>
+        <p>Wind Speed: {{ weather_data.wind_speed }} km/h</p>
+        <p>Wind Direction: {{ weather_data.wind_direction }}°</p>
+      {% endif %}
+    </div>
+    <div class="current-weather">
+      <h3>Current Weather Conditions</h3>
+      <p>Temperature: <span id="temperature">--</span></p>
+      <p>Humidity: <span id="humidity">--</span></p>
+      <p>Wind Speed: <span id="wind-speed">--</span></p>
+      <p>Wind Direction: <span id="wind-direction">--</span></p>
+      <div id="error-message"></div>
+    </div>
+  </header>
+
+  <main>
+    <div id="map"></div>
+    <div class="hourly-forecast">
+      <h3>Hourly Forecast</h3>
+      <table>
+        <tr>
+          <th>Time</th>
+          <th>Temperature</th>
+          <th>Humidity</th>
+          <th>Wind Speed</th>
+          <th>Wind Direction</th>
+        </tr>
+        <!-- Hourly forecast data rows -->
+        {% if hourly_forecast %}
+          {% for forecast in hourly_forecast %}
+            <tr>
+              <td>{{ forecast.dt_txt }}</td>
+              <td>{{ forecast.main.temp }}°C</td>
+              <td>{{ forecast.main.humidity }}%</td>
+              <td>{{ forecast.wind.speed }} km/h</td>
+              <td>{{ forecast.wind.deg }}°</td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </table>
+    </div>
+    <div class="smaller-images">
+      <img src="{{ url_for('static', filename='image/pic1.jpg') }}" alt="tornado image">
+      <img src="{{ url_for('static', filename='image/pic2.jpg') }}" alt="rain image">
+      <img src="{{ url_for('static', filename='image/pic3.jpg') }}" alt="beautiful weather">
+    </div>
+  </main>
+
+  <footer>
+  <p>Data source: <a href="#">Weather API</a></p>
+  <p>Contact: <a href="weatheryoni@gmail.com">weatheryoni@gmail.com</a></p>
+</footer>
